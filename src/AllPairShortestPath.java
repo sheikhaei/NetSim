@@ -1,22 +1,31 @@
-
-// All Pairs Shortest Path algorithm (Floyd-Warshall)
-
+import java.io.FileNotFoundException;
+import java.io.PrintWriter;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * Find All Pairs Shortest Path by Floyd-Warshall algorithm.
+ */
 public class AllPairShortestPath {
 
 	final static int INF = 99999;
-
-	void floydWarshall(Network net) {
-		int length[][] = new int[net.numNodes()][net.numNodes()];
-		int shortestPath[][][] = new int[net.numNodes()][net.numNodes()][];
+	public int shortestPath[][][];
+	private int numNodes;
+	
+	public AllPairShortestPath(Network net){
+		floydWarshall(net);
+	}
+	
+	public void floydWarshall(Network net) {
+		numNodes = net.numNodes();
+		int length[][] = new int[numNodes][numNodes];
+		shortestPath = new int[numNodes][numNodes][];
 		int i, j, k;
 
 		 // Initialize the solution matrix same as input graph matrix.
-		for (i = 0; i < net.numNodes(); i++) {
-			for (j = 0; j < net.numNodes(); j++) {
+		for (i = 0; i < numNodes; i++) {
+			for (j = 0; j < numNodes; j++) {
 				if (i == j) {
 					length[i][j] = 0;
 					shortestPath[i][j] = new int[0];
@@ -35,9 +44,9 @@ public class AllPairShortestPath {
 		 * consider only the vertices in set {0, 1, 2, .. k-1} as intermediate vertices. ----> After the end of an iteration, vertex no. k is added to the set of intermediate vertices and the set
 		 * becomes {0, 1, 2, .. k}
 		 */
-		for (k = 0; k < net.numNodes(); k++) {
-			for (i = 0; i < net.numNodes(); i++) {
-				for (j = 0; j < net.numNodes(); j++) {
+		for (k = 0; k < numNodes; k++) {
+			for (i = 0; i < numNodes; i++) {
+				for (j = 0; j < numNodes; j++) {
 					if (length[i][k] + length[k][j] < length[i][j]) {
 						length[i][j] = length[i][k] + length[k][j];
 						shortestPath[i][j] = concat(shortestPath[i][k], shortestPath[k][j]);
@@ -70,14 +79,19 @@ public class AllPairShortestPath {
 		return path;
 	}
 
-	void printSolution(Network net, int shortestPath[][][]) {
-		System.out.println("The following matrix shows the shortest " + "distances between every pair of vertices");
-		for (int i = 0; i < net.numNodes(); ++i) {
-			for (int j = 0; j < net.numNodes(); ++j) {
-				List<Integer> path = Arrays.stream(shortestPath[i][j]).boxed().collect(Collectors.toList());
-				System.out.println(i + " to " + j + " : " + path);
+	public void write(String filePath) {
+		try {
+			PrintWriter writer = new PrintWriter(filePath);
+			for (int i = 0; i < numNodes; ++i) {
+				for (int j = 0; j < numNodes; ++j) {
+					List<Integer> path = Arrays.stream(shortestPath[i][j]).boxed().collect(Collectors.toList());
+					writer.println(i + " to " + j + " : " + path);
+				}
+				writer.println();
 			}
-			System.out.println();
+			writer.close();
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
 		}
 	}
 }

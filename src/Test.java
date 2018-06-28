@@ -3,8 +3,8 @@ import java.util.List;
 public class Test {
 
 	public static void main(String[] args) {
-		int numNodes = 1000; // 100
-		int numConnections = 2000; // 110
+		int numNodes = 10; // 100
+		int numConnections = 20; // 110
 		int minBandwidth = 10;
 		int maxBandwidth = 100;
 		int minCost = 1;
@@ -81,8 +81,8 @@ public class Test {
 //		}
 		
 		
-		AllPairShortestPath allPairShortestPath = new AllPairShortestPath();
-		allPairShortestPath.floydWarshall(net);
+		AllPairShortestPath allPairShortestPath = new AllPairShortestPath(net);
+		allPairShortestPath.write("output/shortestPath.txt");
 		
 	}
 
