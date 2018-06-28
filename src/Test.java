@@ -83,6 +83,7 @@ public class Test {
 		
 		AllPairShortestPath allPairShortestPath = new AllPairShortestPath(net);
 		allPairShortestPath.write("output/shortestPath.txt");
+		System.out.println(allPairShortestPath.getShortestPath(1, 2));
 		
 	}
 

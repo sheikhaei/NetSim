@@ -10,7 +10,7 @@ import java.util.stream.Collectors;
 public class AllPairShortestPath {
 
 	final static int INF = 99999;
-	public int shortestPath[][][];
+	private int shortestPath[][][];
 	private int numNodes;
 	
 	public AllPairShortestPath(Network net){
@@ -77,6 +77,10 @@ public class AllPairShortestPath {
 			path[i + path1.length - 1] = path2[i];
 		}
 		return path;
+	}
+	
+	public List<Integer> getShortestPath(int from, int to){
+		return Arrays.stream(shortestPath[from][to]).boxed().collect(Collectors.toList());
 	}
 
 	public void write(String filePath) {
